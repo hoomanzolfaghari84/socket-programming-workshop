@@ -1,3 +1,5 @@
+# other examples at https://asyncudp.readthedocs.io/en/latest/
+
 import asyncio
 import contract
 
