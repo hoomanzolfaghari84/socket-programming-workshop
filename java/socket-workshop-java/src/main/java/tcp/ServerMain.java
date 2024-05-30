@@ -1,17 +1,21 @@
 package tcp;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ServerMain {
+
     public static void main(String[] args) throws IOException {
         int port = 1234;
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             int clientId = 0 ;
+            System.out.println("server started");
             while (true) {
                 Socket socket = serverSocket.accept();
                 clientId++;
@@ -39,7 +43,7 @@ public class ServerMain {
         private void listen(){
             while (true) {
                 String s = scanner.nextLine();
-                System.out.println("client sent: " + s);
+                System.out.println("client "+ id+ " sent: " + s);
                 String response = "server response to:" + s;
                 printWriter.println(response);
                 printWriter.flush();
@@ -56,5 +60,22 @@ public class ServerMain {
             }
         }
 
+    }
+
+    public static void handleData(Socket socket) throws IOException {
+        DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+        DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
+
+
+        int buffer = 1024;
+        byte[] content = new byte[buffer];
+        inputStream.readFully(content);
+
+        File file = new File("");
+        byte[] bytes = Files.readAllBytes(file.toPath());
+        outputStream.write(bytes);
+        outputStream.flush();
+
+        new Scanner(System.in).nextLine();
     }
 }

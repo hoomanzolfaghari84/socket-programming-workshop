@@ -8,14 +8,15 @@ import java.util.Scanner;
 public class ClientMain {
 
     public static void main(String[] args) throws IOException {
+        startClient();
+    }
 
-
-        // video 1: initialization
-
+    public static void startClient() throws IOException {
         try (Socket socket = new Socket("localhost", 1234)) {
             Scanner scanner = new Scanner(socket.getInputStream());
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
             Scanner terminal = new Scanner(System.in);
+            System.out.println("connection established");
             while (true){
                 String s = terminal.nextLine();
                 printWriter.println(s);
